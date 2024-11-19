@@ -1,1 +1,54 @@
-Use MTCNN network and OpenCV to implement face ID and face landmark
+Use MTCNN network and OpenCV to implement face ID and face landmark.
+
+1. Importing Libraries:
+   - torch: Used for GPU computation if available.
+   - numpy: Handles numerical operations like angle calculations.
+   - cv2 (OpenCV): Handles image reading, processing, and display.
+   - facenet_pytorch.MTCNN: Detects faces and facial landmarks.
+
+2. Initializing the MTCNN Model:
+   - MTCNN is set to detect all faces (keep_all=True).
+   - The model runs on GPU if available, otherwise on CPU.
+
+3. Defining the process_image Function:
+   - This function processes an input image to detect faces, landmarks, and align faces.
+
+4. Loading and Preparing the Image:
+   - Step 1: Reads the image using OpenCV (cv2.imread).
+   - Step 2: Converts the image from BGR to RGB for MTCNN compatibility.
+
+5. Detecting Faces and Landmarks:
+   - Uses MTCNN.detect to find:
+     - Face bounding boxes.
+     - Confidence scores.
+     - Facial landmarks (eyes, nose, mouth).
+   - If faces are found, each face is processed.
+
+6. Processing Each Detected Face:
+   - a. Drawing the Bounding Box:
+       - Draws a green rectangle around the face.
+       - Saves the image with the bounding box.
+   - b. Drawing Landmarks:
+       - Draws red dots on detected landmarks.
+       - Saves the image with landmarks.
+   - c. Extracting the Face:
+       - Crops the face using bounding box coordinates.
+       - Saves the cropped face image.
+   - d. Aligning the Face:
+       1. Calculates the angle between the eyes.
+       2. Finds the midpoint of the eyes as the rotation center.
+       3. Computes the rotation matrix using OpenCV’s getRotationMatrix2D.
+       4. Rotates the face to align it using the calculated matrix.
+       5. Crops and saves the aligned face.
+
+7. Returning and Displaying the Processed Image:
+   - Converts the processed image to BGR for OpenCV.
+   - Displays the image using cv2.imshow.
+   - Waits for a key press before closing the display window.
+
+8. Saving Outputs:
+   - Saves images at various stages:
+     1. Image with bounding boxes.
+     2. Image with landmarks.
+     3. Cropped face.
+     4. Aligned face.
