@@ -1,0 +1,67 @@
+MTCNN: Multi-task Cascaded Convolutional Networks for Face Detection and Alignment Overview
+
+MTCNN (Multi-task Cascaded Convolutional Networks) is a deep learning framework designed for real-time face detection and facial landmark localization. 
+It simultaneously detects face bounding boxes and five key facial landmarks (eyes, nose, mouth corners) through a cascade of three neural networks.
+
+MTCNN is widely used in:
+
+Face detection in images and video
+
+Face alignment for preprocessing in face recognition
+
+Mobile and embedded vision applications
+
+Security surveillance and access control systems
+
+Camera beautification and AR filters
+
+
+Architecture
+MTCNN uses a three-stage cascade structure. Each stage progressively refines the results of the previous one. The networks are:
+
+1. Proposal Network (P-Net)
+Purpose: Quickly scans the input image to generate candidate face bounding boxes.
+
+Outputs:
+
+Face classification scores
+
+Bounding box regression vectors
+
+Notes: Operates at multiple image scales using an image pyramid.
+
+2. Refine Network (R-Net)
+Purpose: Filters out false positives from P-Net and refines bounding box locations.
+
+Outputs: Same as P-Net, but with higher precision.
+
+Notes: Discards low-confidence candidates.
+
+3. Output Network (O-Net)
+Purpose: Performs final bounding box refinement and predicts five facial landmarks.
+
+Outputs:
+
+Face classification scores
+
+Refined bounding boxes
+
+5 facial landmarks (left eye, right eye, nose, left mouth corner, right mouth corner)
+
+
+ Detection Pipeline
+mermaid
+複製
+編輯
+graph TD
+A[Input Image] --> B[P-Net]
+B --> C[NMS + Bounding Box Regression]
+C --> D[R-Net]
+D --> E[NMS + Refinement]
+E --> F[O-Net]
+F --> G[NMS + Landmark Output]
+NMS (Non-Maximum Suppression) is used at every stage to remove overlapping boxes.
+
+Bounding box regression improves localization accuracy at each step.
+
+Facial landmarks are only predicted in the O-Net stage.
