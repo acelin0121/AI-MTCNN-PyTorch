@@ -1,67 +1,54 @@
-MTCNN: Multi-task Cascaded Convolutional Networks for Face Detection and Alignment Overview
+# MTCNN: Multi-task Cascaded Convolutional Networks for Face Detection and Alignment
+MTCNN is a deep learning framework designed for real-time face detection and facial landmark localization.
+It detects face bounding boxes and five key facial landmarks (eyes, nose, mouth corners) using a cascade of three neural networks.
 
-MTCNN (Multi-task Cascaded Convolutional Networks) is a deep learning framework designed for real-time face detection and facial landmark localization. 
-It simultaneously detects face bounding boxes and five key facial landmarks (eyes, nose, mouth corners) through a cascade of three neural networks.
-
-MTCNN is widely used in:
-
+# Applications of MTCNN:
 Face detection in images and video
+Face alignment as a preprocessing step for face recognition
+Mobile and embedded vision systems
+Surveillance, access control, and biometric security
+Camera beautification and AR filter tracking
 
-Face alignment for preprocessing in face recognition
+# Architecture Overview:
+MTCNN consists of three stages. Each stage refines the output of the previous one.
 
-Mobile and embedded vision applications
-
-Security surveillance and access control systems
-
-Camera beautification and AR filters
-
-
-Architecture
-MTCNN uses a three-stage cascade structure. Each stage progressively refines the results of the previous one. The networks are:
-
-1. Proposal Network (P-Net)
-Purpose: Quickly scans the input image to generate candidate face bounding boxes.
-
+Stage 1: P-Net (Proposal Network)
+Function: Scans the input image at multiple scales to propose candidate face regions.
 Outputs:
+Face classification score
+Bounding box regression
+Features:
+Works with image pyramid to detect faces of various sizes
+Produces many rough bounding boxes
 
-Face classification scores
-
-Bounding box regression vectors
-
-Notes: Operates at multiple image scales using an image pyramid.
-
-2. Refine Network (R-Net)
-Purpose: Filters out false positives from P-Net and refines bounding box locations.
-
-Outputs: Same as P-Net, but with higher precision.
-
-Notes: Discards low-confidence candidates.
-
-3. Output Network (O-Net)
-Purpose: Performs final bounding box refinement and predicts five facial landmarks.
-
+Stage 2: R-Net (Refine Network)
+Function: Filters out false positives and refines bounding boxes from P-Net.
 Outputs:
+Refined face classification score
+Improved bounding box regression
+Features:
+Discards low-confidence and overlapping boxes
+Keeps higher-quality face candidates
 
-Face classification scores
+Stage 3: O-Net (Output Network)
+Function: Final bounding box refinement and facial landmark prediction
+Outputs:
+Final face classification score
+Final bounding box regression
+Five facial landmarks:
+Left eye
+Right eye
+Nose
+Left mouth corner
+Right mouth corner
+Features:
+Outputs accurate face bounding boxes
+Provides facial landmarks used for face alignment
 
-Refined bounding boxes
+# Pipeline Summary:
+Resize input image to multiple scales
+Use P-Net to propose initial face bounding boxes
+Use R-Net to filter and refine boxes
+Use O-Net to produce final bounding boxes and predict landmarks
+Output includes face locations and five facial landmark positions
 
-5 facial landmarks (left eye, right eye, nose, left mouth corner, right mouth corner)
-
-
- Detection Pipeline
-mermaid
-複製
-編輯
-graph TD
-A[Input Image] --> B[P-Net]
-B --> C[NMS + Bounding Box Regression]
-C --> D[R-Net]
-D --> E[NMS + Refinement]
-E --> F[O-Net]
-F --> G[NMS + Landmark Output]
-NMS (Non-Maximum Suppression) is used at every stage to remove overlapping boxes.
-
-Bounding box regression improves localization accuracy at each step.
-
-Facial landmarks are only predicted in the O-Net stage.
