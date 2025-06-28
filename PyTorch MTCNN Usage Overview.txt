@@ -1,0 +1,47 @@
+MTCNN in PyTorch is commonly used through the facenet-pytorch library. It provides an easy-to-use interface for face detection and facial landmark localization.
+
+#Installation:
+pip install facenet-pytorch
+
+# Importing MTCNN:
+from facenet_pytorch import MTCNN
+import torch
+from PIL import Image
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+mtcnn = MTCNN(keep_all=True, device=device)
+
+# Basic Usage:
+
+# Load an image:
+image = Image.open('input.jpg')
+
+Detect faces and landmarks:
+boxes, probs, landmarks = mtcnn.detect(image, landmarks=True)
+boxes: list of bounding boxes for detected faces
+
+probs: confidence scores for each detection
+landmarks: coordinates of the five facial landmarks for each face
+
+Draw results using OpenCV or PIL if needed.
+
+# Landmarks are in the order:
+left eye, right eye, nose, left mouth corner, right mouth corner
+
+
+# Batch Processing:
+To detect faces in a batch of images:
+
+from facenet_pytorch import MTCNN
+from PIL import Image
+import glob
+
+images = [Image.open(p) for p in glob.glob('images/*.jpg')]
+mtcnn = MTCNN(keep_all=True, device=device)
+boxes, probs, landmarks = mtcnn.detect(images, landmarks=True)
+
+Notes:
+MTCNN works best on clear frontal face images
+Can be combined with face recognition models for full pipelines
+Useful for preprocessing steps such as face cropping and alignment
+
